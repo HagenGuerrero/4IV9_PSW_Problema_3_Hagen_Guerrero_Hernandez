@@ -104,3 +104,11 @@ wiiiiiiiiiiiiiiii uwu/
 
 
 */
+
+function Problema_3(){
+
+    var letras = {};
+    var palabras;
+    /**/
+
+}
