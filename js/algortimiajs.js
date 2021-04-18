@@ -1,3 +1,58 @@
+/* agrego clase diccionario porque aárenemente no etsiste */
+
+class Dictionary {
+    constructor () {
+      this.items = {}
+    }
+    
+    has (key) {
+      return this.items.hasOwnProperty(key);	
+    }
+    
+    set (key, value) {
+      this.items[key] = value;
+    }
+    
+    remove (key) {
+      if (this.has(key)) {
+        delete this.items[key];
+        return true;
+      }
+  
+      return false;
+    }
+    
+    get (key) {
+      return this.has(key) ? this.items[key] : undefined;
+    }
+    
+    values () {
+      const values = []
+      for (let key in this.items) {
+        if (this.has(key)) {
+          values.push(this.items[key])
+        }
+      }
+      return values
+    }
+  
+    size () {
+      return Object.keys(this.items).length
+    }
+    
+    keys () {
+      const keys = []
+      for (let key in this.items) {
+          keys.push(keys)
+      }
+          return keys
+    }
+    
+    getItems () {
+      return this.items
+    }
+  }
+
 //vamos a tener que obtener los valores de los input
 
 function problema1(){
@@ -82,8 +137,6 @@ function problema2(){
 
 problema 3
 
-primero mi alfabeto a - z
-
 identificar la coma   varible.split(',')
 
 eliminar los espacios   
@@ -100,15 +153,84 @@ guardando los caracteres unicos
 
 un bucle dentro de otro bucle
 
-wiiiiiiiiiiiiiiii uwu/
-
+wiiiiiiiiiiiiiiiiiiiiiiii uwu
 
 */
 
-function Problema_3(){
+function problema3(){
 
-    var letras = {};
-    var palabras;
-    /**/
+    //leo palabras
+    var input = document.querySelector('#p3-input').value;
 
+    /*regex para validar casos
+    caso 1: una sola palabra
+    caso 2: tres o mas palabras
+    caso 3: dos palabras
+    */
+    var goRegex = /^[A-ZÑ]+$|^([A-ZÑ]+( *, *))+[A-ZÑ]+$|^[A-ZÑ]+( *, *)[A-ZÑ]+$/;
+
+    //valido casos    
+    if ( !goRegex.test(input)){
+        alert("Ingrese palabras en letras mayúsculas separadas por comas plox");
+        return;
+    }
+
+    //funcion de todo xd
+    var arreglo = input.split(',');
+
+    var pocision = "";
+    var lnMayor = 0;
+    var lsMayor = "";
+
+    for (var i = 0 ; i < arreglo.length ; i++){
+        pocision = arreglo[i];
+
+        var lsSalida = Conteo(pocision.replace(" ",""));
+        var lasValores = lsSalida.split("|");
+        var lnLargo = parseInt(lasValores[0],10);
+
+        //vemos cual es la cadena con mayor cantidad de caracteres únicos
+        if(lnLargo > lnMayor){
+            lnMayor = lnLargo;
+            lsMayor = lsSalida;
+        }
+
+
+    }
+
+    //imprimimos la cadena con mayor cantidad de caracteres únicos
+
+    document.querySelector("#p3-output").textContent = "la palabra con mas caracteres únicos es:  " + lsMayor;
 }
+
+/* Creo una funcion que me permita hacer el conteo con el diccionario, el dccionario
+para poder meter datos ordenados sin que se repitan y ahorrarnos algunos bucles que se me ocurrian xd
+guardo clave=valor donde clave= caracter leido, con la condicion de que si ya esta en el diccionario
+no lo vuelva a agregar basandome en la clave */
+
+function Conteo(elemento){
+
+    var diccionario = new Dictionary();
+    var lsLetras = "";
+    var lnCont = 0;
+
+    for (var i = 0 ; i < elemento.length ; i++){
+
+        var caracter = elemento.substr(i,1);
+        console.log(caracter);
+        console.log(diccionario.has(caracter));
+        if(diccionario.has(caracter) == false){
+            diccionario.set(caracter,caracter);
+            //agrega las letras a una cadena de caracteres del diccionario
+            lsLetras += caracter + ",";
+
+            //contador de caracteres unicos
+            lnCont++;
+        }
+    }
+
+    //la cantidad de caracteres y los caracteres separados por coma
+ 
+    return lnCont.toString() + "|" + lsLetras;
+}
+
